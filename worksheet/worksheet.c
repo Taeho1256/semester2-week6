@@ -11,11 +11,6 @@
  * 1. Implement each function according to its documentation
  * 2. Compile and run to test: gcc worksheet.c -o worksheet && ./worksheet
  * 3. Acutest will show which tests pass/fail
- *
- * Run options:
- *   ./worksheet              - Run all tests
- *   ./worksheet --list       - List all tests
- *   ./worksheet test_name    - Run specific test
  */
 
 #include "acutest.h"
@@ -37,124 +32,79 @@ int find_max(int *arr, int n, int *index);
 
 /**
  * Function 1: add_values
- *
  * Returns the sum of two integers.
- * This demonstrates simple pass-by-value with a return.
- *
- * @param a First integer
- * @param b Second integer
- * @return The sum a + b
- *
- * Example: add_values(3, 4) returns 7
  */
 int add_values(int a, int b) {
-  // TODO: Implement this function
-  return 0; // Replace this
+  return a + b;
 }
 
 /**
  * Function 2: swap_values
- *
  * Swaps two integers using pointers (pass by reference).
- * After calling, *a should have the original value of *b,
- * and *b should have the original value of *a.
- *
- * @param a Pointer to first integer
- * @param b Pointer to second integer
- *
- * Example:
- *   int x = 5, y = 10;
- *   swap_values(&x, &y);
- *   // Now x == 10, y == 5
  */
 void swap_values(int *a, int *b) {
-  // TODO: Implement this function
-  // Hint: You'll need a temporary variable
+  int temp = *a;
+  *a = *b;
+  *b = temp;
 }
 
 /**
  * Function 3: sum_array
- *
  * Returns the sum of all elements in an array.
- * This demonstrates arrays as pointers in function arguments.
- *
- * @param arr Pointer to the first element of the array
- * @param n   Number of elements in the array
- * @return    Sum of all elements
- *
- * Example: sum_array([1,2,3,4,5], 5) returns 15
  */
 int sum_array(int *arr, int n) {
-  // TODO: Implement this function
-  return 0; // Replace this
+  int sum = 0;
+  for (int i = 0; i < n; i++) {
+    sum += arr[i];
+  }
+  return sum;
 }
 
 /**
  * Function 4: reverse_array
- *
  * Reverses an array in place.
- * The first element becomes the last, etc.
- *
- * @param arr Pointer to the first element of the array
- * @param n   Number of elements in the array
- *
- * Example:
- *   int arr[] = {1, 2, 3, 4, 5};
- *   reverse_array(arr, 5);
- *   // Now arr[] == {5, 4, 3, 2, 1}
- *
- * Hint: Swap elements from both ends, moving toward the middle
  */
 void reverse_array(int *arr, int n) {
-  // TODO: Implement this function
+  for (int i = 0; i < n / 2; i++) {
+    int temp = arr[i];
+    arr[i] = arr[n - 1 - i];
+    arr[n - 1 - i] = temp;
+  }
 }
 
 /**
  * Function 5: average
- *
  * Returns the average of array elements as a double.
- * This demonstrates returning a different type than the input.
- *
- * @param arr Pointer to the first element of the array
- * @param n   Number of elements in the array
- * @return    Average as a double
- *
- * Example: average([1,2,3,4,5], 5) returns 3.0
- * Example: average([1,2], 2) returns 1.5
  */
 double average(int *arr, int n) {
-  // TODO: Implement this function
-  // Hint: Be careful with integer division!
-  return 0.0; // Replace this
+  if (n <= 0) return 0.0;
+  int sum = sum_array(arr, n);
+  return (double)sum / n;
 }
 
 /**
  * Function 6: find_max
- *
  * Finds the maximum value in an array AND its index.
- * The maximum value is returned, and the index is stored
- * in the output parameter.
- *
- * @param arr   Pointer to the first element of the array
- * @param n     Number of elements in the array
- * @param index Pointer to store the index of the maximum (output parameter)
- * @return      The maximum value
- *
- * Example:
- *   int arr[] = {3, 7, 2, 9, 4};
- *   int idx;
- *   int max = find_max(arr, 5, &idx);
- *   // max == 9, idx == 3
  */
 int find_max(int *arr, int n, int *index) {
-  // TODO: Implement this function
-  *index = 0;
-  return 0; // Replace this
+  if (n <= 0) return 0;
+
+  int max_val = arr[0];
+  int max_idx = 0;
+
+  for (int i = 1; i < n; i++) {
+    if (arr[i] > max_val) {
+      max_val = arr[i];
+      max_idx = i;
+    }
+  }
+
+  *index = max_idx;
+  return max_val;
 }
 
 /* ============================================================
  * UNIT TESTS - Using Acutest framework
- * https://github.com/mity/acutest
  * ============================================================ */
 
 void test_add_values(void) {
@@ -178,22 +128,19 @@ void test_swap_values(void) {
   b = 10;
   swap_values(&a, &b);
   TEST_CHECK(a == 10 && b == 5);
-  TEST_MSG("After swap_values(&5, &10): expected a=10, b=5, got a=%d, b=%d", a,
-           b);
+  TEST_MSG("After swap_values(&5, &10): expected a=10, b=5, got a=%d, b=%d", a, b);
 
   a = -1;
   b = 1;
   swap_values(&a, &b);
   TEST_CHECK(a == 1 && b == -1);
-  TEST_MSG("After swap_values(&-1, &1): expected a=1, b=-1, got a=%d, b=%d", a,
-           b);
+  TEST_MSG("After swap_values(&-1, &1): expected a=1, b=-1, got a=%d, b=%d", a, b);
 
   a = 0;
   b = 100;
   swap_values(&a, &b);
   TEST_CHECK(a == 100 && b == 0);
-  TEST_MSG("After swap_values(&0, &100): expected a=100, b=0, got a=%d, b=%d",
-           a, b);
+  TEST_MSG("After swap_values(&0, &100): expected a=100, b=0, got a=%d, b=%d", a, b);
 }
 
 void test_sum_array(void) {
@@ -259,26 +206,23 @@ void test_find_max(void) {
   int idx1;
   int max1 = find_max(arr1, 5, &idx1);
   TEST_CHECK(max1 == 9 && idx1 == 3);
-  TEST_MSG("Expected find_max([3,7,2,9,4]) = 9 at index 3, got %d at %d", max1,
-           idx1);
+  TEST_MSG("Expected find_max([3,7,2,9,4]) = 9 at index 3, got %d at %d", max1, idx1);
 
   int arr2[] = {100};
   int idx2;
   int max2 = find_max(arr2, 1, &idx2);
   TEST_CHECK(max2 == 100 && idx2 == 0);
-  TEST_MSG("Expected find_max([100]) = 100 at index 0, got %d at %d", max2,
-           idx2);
+  TEST_MSG("Expected find_max([100]) = 100 at index 0, got %d at %d", max2, idx2);
 
   int arr3[] = {-5, -2, -8, -1};
   int idx3;
   int max3 = find_max(arr3, 4, &idx3);
   TEST_CHECK(max3 == -1 && idx3 == 3);
-  TEST_MSG("Expected find_max([-5,-2,-8,-1]) = -1 at index 3, got %d at %d",
-           max3, idx3);
+  TEST_MSG("Expected find_max([-5,-2,-8,-1]) = -1 at index 3, got %d at %d", max3, idx3);
 }
 
 /* ============================================================
- * TEST LIST - Acutest discovers tests from this list
+ * TEST LIST
  * ============================================================ */
 
 TEST_LIST = {
@@ -288,5 +232,5 @@ TEST_LIST = {
     {"reverse_array", test_reverse_array},
     {"average", test_average},
     {"find_max", test_find_max},
-    {NULL, NULL} /* End of list */
+    {NULL, NULL}
 };
